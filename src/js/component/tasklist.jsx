@@ -3,7 +3,8 @@ import Task from "./task";
 
 const TaskList = () => {
     return(
-        <ul class="list-group rounded-0 border border-0">
+        
+        <ul className="list-group rounded-0 border border-0 bg-white">
         <Task />
         </ul>
     )

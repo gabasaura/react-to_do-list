@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { FaPlus } from "react-icons/fa6";
+import { FaTrash } from "react-icons/fa";
+
 
 function Task() {
     const [tasks, setTasks] = useState([]);
@@ -17,72 +18,91 @@ function Task() {
 
     const handleCheckboxChange = (index) => {
         const newTasks = [...tasks];
-        newTasks.splice(index, 1);
+        newTasks[index] = { ...newTasks[index], completed: !newTasks[index].completed };
         setTasks(newTasks);
+    };
+
+    const handleDeleteTask = (index) => {
+        const updatedTasks = tasks.filter((task, i) => i !== index);
+        setTasks(updatedTasks);
     };
 
     const handleAddTask = () => {
         if (inputValue.trim() !== '') {
-            setTasks([...tasks, inputValue]);
+            setTasks([...tasks, { text: inputValue, completed: false }]);
             setInputValue('');
         }
     };
 
     return (
         <>
-            <li className="list-group-item border border-0">
+            {tasks.length === 0 && (
+                <h6 className="text-primary mx-3 mt-5 text-center">START LIST</h6>
+            )}
+            <li className="list-group-item border border-0 mt-3">
                 <div className="input-group">
                     <div className="input-group-text">
-                    <input
-                        className="form-check-input mt-0"
-                        type="checkbox"
-                        value=""
-                        aria-label="Checkbox"
-                        onChange={() => handleCheckboxChange(index)}
-                        disabled />
+                        <input
+                            className="form-check-input mt-0"
+                            type="checkbox"
+                            value=""
+                            aria-label="Checkbox"
+                            disabled
+                        />
                     </div>
                     <input
-                        className="form-control"
+                        className="form-control shadow-none"
                         type="text"
                         value={inputValue}
                         onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
-                        placeholder="Tarea Nueva"
+                        placeholder="YOUR TASK HERE"
                     />
                     <button
                         className="btn btn-outline-primary"
                         type="button"
                         id="button-addon1"
-                        onClick={handleAddTask}>
-                        <FaPlus />
+                        onClick={handleAddTask}
+                    >
+                        ADD NEW
                     </button>
                 </div>
             </li>
+
             <ul className="list-group list-group-flush rounded-0">
                 {tasks.map((task, index) => (
                     <li key={index} className="list-group-item border border-0">
                         <div className="input-group">
                             <div className="input-group-text">
-                            <input
-                                className="form-check-input mt-0"
-                                type="checkbox"
-                                value=""
-                                aria-label="Checkbox"
-                                onChange={() => handleCheckboxChange(index)}
+                                <input
+                                    className="form-check-input mt-0"
+                                    type="checkbox"
+                                    value=""
+                                    aria-label="Checkbox"
+                                    checked={task.completed}
+                                    onChange={() => handleCheckboxChange(index)}
+                                    disabled={task.completed}
                                 />
                             </div>
                             <input
-                                className="form-control"
+                                className="form-control shadow-none"
                                 type="text"
-                                value={task}
-                                 
+                                value={task.text}
+                                disabled={task.completed}
                             />
-                            
+                            {task.completed && (
+                                <button
+                                    className="btn btn-outline-success"
+                                    onClick={() => handleDeleteTask(index)}
+                                >
+                                    <FaTrash />
+                                </button>
+                            )}
                         </div>
                     </li>
                 ))}
             </ul>
-            <p className='text-white py-1'><small>Tareas Pendientes: <strong>{tasks.length}</strong> ◝(ᵔᗜᵔ)◜</small></p>
+            <h6 className='text-bg-primary p-1 m-3 rounded-5 text-center'>PENDING TASKS: <strong>{tasks.filter(task => !task.completed).length}</strong></h6>
         </>
     );
 }
