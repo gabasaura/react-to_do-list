@@ -37,7 +37,7 @@ function Task() {
     return (
         <>
             {tasks.length === 0 && (
-                <h6 className="text-primary mx-3 mt-5 text-center">START LIST</h6>
+                <h6 className="text-primary mx-3 mt-5 text-center">START YOUR LIST</h6>
             )}
             <li className="list-group-item border border-0 mt-3">
                 <div className="input-group">
@@ -102,7 +102,7 @@ function Task() {
                     </li>
                 ))}
             </ul>
-            <h6 className='text-bg-primary p-1 m-3 rounded-5 text-center'>PENDING TASKS: <strong>{tasks.filter(task => !task.completed).length}</strong></h6>
+            <p className='border border-primary p-1 m-3 rounded-2 text-center'><small>PENDING TASKS: <strong>{tasks.filter(task => !task.completed).length}</strong></small></p>
         </>
     );
 }
